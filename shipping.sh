@@ -24,7 +24,7 @@ echo -e "\e[31m Install mysql client \e[0m"
 dnf install mysql -y    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Install mysql client \e[0m"
-mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 < /app/schema/shipping.sql   &>>/tmp/roboshop.log
+mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 </app/schema/shipping.sql   &>>/tmp/roboshop.log
 
 echo -e "\e[31m Start the service  \e[0m"
 systemctl daemon-reload   &>>/tmp/roboshop.log
