@@ -33,12 +33,3 @@ echo -e "\e[31m  Start user service \e[0m"
 systemctl daemon-reload   &>>/tmp/roboshop.log
 systemctl enable user    &>>/tmp/roboshop.log
 systemctl restart user     &>>/tmp/roboshop.log
-
-echo -e "\e[31m Setup mongoDB repo \e[0m"
-cp /home/centos/roboshop1-shell/mongo.repo /etc/yum.repos.d/mongo.repo    &>>/tmp/roboshop.log
-
-echo -e "\e[31m Install Mongodb client \e[0m"
-dnf install mongodb-org-shell -y    &>>/tmp/roboshop.log
-
-echo -e "\e[31m Load schema \e[0m"
-mongo --host mongodb-dev.smitdevops.online </app/schema/user.js    &>>/tmp/roboshop.log
