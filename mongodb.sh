@@ -5,7 +5,7 @@ echo -e "\e[33m Installing MongoDB \e[0m"
 dnf install mongodb-org -y &>>/tmp/roboshop.log
 
 echo -e "\e[33m Open mongodb service for all \e[0m"
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>>/tmp/roboshop.log
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>>/tmp/roboshop.log
 
 echo -e "\e[33m Restating mongodb service \e[0m"
 systemctl enable mongod &>>/tmp/roboshop.log
