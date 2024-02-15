@@ -22,15 +22,15 @@ cd /app
 unzip /tmp/catalogue.zip    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Download dependencies \e[0m"
+cd /app
 npm install &>>/tmp/roboshop.log
 
 echo -e "\e[31m Setup systemd catalogue service \e[0m"
 cp /home/centos/roboshop1-shell/catalogue.service /etc/systemd/system/catalogue.service   &>>/tmp/roboshop.log
 
-echo -e "\e[31m  Load the service \e[0m"
-systemctl daemon-reload   &>>/tmp/roboshop.log
 
-echo -e "\e[31m  Restart catalogue service \e[0m"
+echo -e "\e[31m  Start catalogue service \e[0m"
+systemctl daemon-reload   &>>/tmp/roboshop.log
 systemctl enable catalogue    &>>/tmp/roboshop.log
 systemctl restart catalogue     &>>/tmp/roboshop.log
 
