@@ -9,6 +9,9 @@ dnf install nodejs -y   &>>/tmp/roboshop.log
 
 echo -e "\e[31m Adding roboshop user \e[0m"
 useradd roboshop    &>>/tmp/roboshop.log
+
+echo -e "\e[31m Create App Dir \e[0m"
+rm -rf /app
 mkdir /app
 
 echo -e "\e[31m  Downloading App Code\e[0m"
