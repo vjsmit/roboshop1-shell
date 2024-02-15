@@ -20,16 +20,13 @@ mv target/shipping-1.0.jar shipping.jar   &>>/tmp/roboshop.log
 echo -e "\e[31m Setup SystemD Shipping Service \e[0m"
 cp /home/centos/roboshop1-shell/shipping.service /etc/systemd/system/shipping.service   &>>/tmp/roboshop.log
 
-echo -e "\e[31m Start the service  \e[0m"
-systemctl daemon-reload   &>>/tmp/roboshop.log
-systemctl enable shipping   &>>/tmp/roboshop.log
-systemctl restart shipping    &>>/tmp/roboshop.log
-
 echo -e "\e[31m Install mysql client \e[0m"
 dnf install mysql -y    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Install mysql client \e[0m"
 mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 < /app/schema/shipping.sql   &>>/tmp/roboshop.log
 
-echo -e "\e[31m  \e[0m"
+echo -e "\e[31m Start the service  \e[0m"
+systemctl daemon-reload   &>>/tmp/roboshop.log
+systemctl enable shipping   &>>/tmp/roboshop.log
 systemctl restart shipping    &>>/tmp/roboshop.log
