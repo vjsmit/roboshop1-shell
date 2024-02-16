@@ -44,7 +44,7 @@ echo -e "${color}Setup mongoDB repo${no_color}"
 cp /home/centos/roboshop1-shell/mongo.repo /etc/yum.repos.d/mongo.repo    &>>${log_file}
 
 echo -e "${color}Install Mongodb client${no_color}"
-dnf install mongodb-org-shell -y    ${log_file}
+dnf install mongodb-org-shell -y    &>>${log_file}
 
 echo -e "${color}Load schema${no_color}"
 mongo --host mongodb-dev.smitdevops.online </app/schema/${component}.js    &>>${log_file}
