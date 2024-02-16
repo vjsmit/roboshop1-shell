@@ -1,6 +1,9 @@
 component=catalogue
 
-echo -e "\e[33m Disabling Default nodejs \e[0m"
+color="\e[33m"
+nocolor="\e[0m"
+
+echo -e "${color}Disabling Default nodejs \e[0m"
 dnf module disable nodejs -y    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Enable nodejs 18 version \e[0m"
