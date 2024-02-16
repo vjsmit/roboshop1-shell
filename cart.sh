@@ -1,35 +1,37 @@
-echo -e "\e[33m Disabling Default nodejs \e[0m"
-dnf module disable nodejs -y    &>>/tmp/roboshop.log
+source=common.sh
 
-echo -e "\e[31m Enable nodejs 18 version \e[0m"
-dnf module enable nodejs:18 -y    &>>/tmp/roboshop.log
+echo -e "${color}Disabling Default nodejs${no_color}"
+dnf module disable nodejs -y    &>>${log_file}
 
-echo -e "\e[31m Installing nodejs \e[0m"
-dnf install nodejs -y   &>>/tmp/roboshop.log
+echo -e "${color}Enable nodejs 18 version${no_color}"
+dnf module enable nodejs:18 -y    &>>${log_file}
 
-echo -e "\e[31m Adding roboshop cart \e[0m"
-useradd roboshop    &>>/tmp/roboshop.log
+echo -e "${color}Installing nodejs${no_color}"
+dnf install nodejs -y   &>>${log_file}
 
-echo -e "\e[31m Create App Dir \e[0m"
-rm -rf /app
-mkdir /app
+echo -e "${color}Adding roboshop cart${no_color}"
+useradd roboshop    &>>${log_file}
 
-echo -e "\e[31m  Downloading App Code\e[0m"
-curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart.zip    &>>/tmp/roboshop.log
+echo -e "${color}Create App Dir${no_color}"
+rm -rf ${app_path}
+mkdir ${app_path}
 
-echo -e "\e[31m Unzip App Code \e[0m"
-cd /app
-unzip /tmp/cart.zip    &>>/tmp/roboshop.log
+echo -e "${color}Downloading App Code\e[0m"
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart.zip    &>>${log_file}
 
-echo -e "\e[31m Download dependencies \e[0m"
-cd /app
-npm install &>>/tmp/roboshop.log
+echo -e "${color}Unzip App Code${no_color}"
+cd ${app_path}
+unzip /tmp/cart.zip    &>>${log_file}
 
-echo -e "\e[31m Setup systemd cart service \e[0m"
-cp /home/centos/roboshop1-shell/cart.service /etc/systemd/system/cart.service   &>>/tmp/roboshop.log
+echo -e "${color}Download dependencies${no_color}"
+cd ${app_path}
+npm install &>>${log_file}
+
+echo -e "${color}Setup systemd cart service${no_color}"
+cp /home/centos/roboshop1-shell/cart.service /etc/systemd/system/cart.service   &>>${log_file}
 
 
-echo -e "\e[31m  Start cart service \e[0m"
-systemctl daemon-reload   &>>/tmp/roboshop.log
-systemctl enable cart    &>>/tmp/roboshop.log
-systemctl restart cart     &>>/tmp/roboshop.log
+echo -e "${color}Start cart service${no_color}"
+systemctl daemon-reload   &>>${log_file}
+systemctl enable cart    &>>${log_file}
+systemctl restart cart     &>>${log_file}
