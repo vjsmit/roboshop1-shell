@@ -1,3 +1,5 @@
+component=catalogue
+
 echo -e "\e[33m Disabling Default nodejs \e[0m"
 dnf module disable nodejs -y    &>>/tmp/roboshop.log
 
@@ -15,24 +17,24 @@ rm -rf /app
 mkdir /app
 
 echo -e "\e[31m  Downloading App Code\e[0m"
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip    &>>/tmp/roboshop.log
+curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Unzip App Code \e[0m"
 cd /app
-unzip /tmp/catalogue.zip    &>>/tmp/roboshop.log
+unzip /tmp/${component}.zip    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Download dependencies \e[0m"
 cd /app
 npm install &>>/tmp/roboshop.log
 
-echo -e "\e[31m Setup systemd catalogue service \e[0m"
-cp /home/centos/roboshop1-shell/catalogue.service /etc/systemd/system/catalogue.service   &>>/tmp/roboshop.log
+echo -e "\e[31m Setup systemd ${component} service \e[0m"
+cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>/tmp/roboshop.log
 
 
-echo -e "\e[31m  Start catalogue service \e[0m"
+echo -e "\e[31m  Start ${component} service \e[0m"
 systemctl daemon-reload   &>>/tmp/roboshop.log
-systemctl enable catalogue    &>>/tmp/roboshop.log
-systemctl restart catalogue     &>>/tmp/roboshop.log
+systemctl enable ${component}    &>>/tmp/roboshop.log
+systemctl restart ${component}     &>>/tmp/roboshop.log
 
 echo -e "\e[31m Setup mongoDB repo \e[0m"
 cp /home/centos/roboshop1-shell/mongo.repo /etc/yum.repos.d/mongo.repo    &>>/tmp/roboshop.log
@@ -41,4 +43,4 @@ echo -e "\e[31m Install Mongodb client \e[0m"
 dnf install mongodb-org-shell -y    &>>/tmp/roboshop.log
 
 echo -e "\e[31m Load schema \e[0m"
-mongo --host mongodb-dev.smitdevops.online </app/schema/catalogue.js    &>>/tmp/roboshop.log
+mongo --host mongodb-dev.smitdevops.online </app/schema/${component}.js    &>>/tmp/roboshop.log
