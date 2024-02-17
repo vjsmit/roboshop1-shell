@@ -97,7 +97,7 @@ python() {
     echo SUCCESS
   else;
     echo FAILURE
-
+  fi
   app_presetup
 
   echo -e "${color}Download the dependencies${no_color}"
