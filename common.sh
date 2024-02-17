@@ -1,57 +1,46 @@
-color="\e[32m"
+color="\e[34m"
 nocolor="\e[0m"
 log_file="/tmp/roboshop.log"
 app_path="/app"
 
-
+func_statcheck() {
+  if [ $? == 0 ]; then
+      echo -e "\e[32mSUCCESS\e[0m"
+    else
+      echo -e "\e[31mFAILURE\e[0m"
+  fi
+}
 
 app_presetup() {
   echo -e "${color}Adding App user${no_color}"
   useradd roboshop    &>>${log_file}
-  if [ $? == 0 ]; then
-      echo SUCCESS
-    else
-      echo FAILURE
-  fi
+  func_statcheck
 
   echo -e "${color}Create App Dir${no_color}"
   rm -rf ${app_path}
   mkdir ${app_path}
-  if [ $? == 0 ]; then
-      echo SUCCESS
-    else
-      echo FAILURE
-  fi
+  func_statcheck
 
   echo -e "${color}Downloading App Code${no_color}"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip    &>>${log_file}
-  if [ $? == 0 ]; then
-      echo SUCCESS
-    else
-      echo FAILURE
-  fi
+  func_statcheck
 
   echo -e "${color}Unzip App Code${no_color}"
   cd ${app_path}
   unzip /tmp/${component}.zip    &>>${log_file}
-  if [ $? == 0 ]; then
-      echo SUCCESS
-    else
-      echo FAILURE
-  fi
-
+  func_statcheck
 }
 
 func_systemd() {
   echo -e "${color}Setup SystemD ${component} Service${no_color}"
   cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${log_file}
-  echo $?
+  func_statcheck
 
   echo -e "${color}Start ${component} service${no_color}"
   systemctl daemon-reload   &>>${log_file}
   systemctl enable ${component}    &>>${log_file}
   systemctl restart ${component}     &>>${log_file}
-  echo $?
+  func_statcheck
 }
 
 
@@ -111,20 +100,13 @@ func_maven() {
 python() {
   echo -e "${color}Install Python 3.6${no_color}"
   dnf install python36 gcc python3-devel -y   &>>${log_file}
-  if [ $? == 0 ]; then
-    echo SUCCESS
-  else
-    echo FAILURE
-  fi
+  func_statcheck
+
   app_presetup
 
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
-  if [ $? == 0 ]; then
-      echo SUCCESS
-    else
-      echo FAILURE
-  fi
+  func_statcheck
 
   func_systemd
 }
