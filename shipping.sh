@@ -1,4 +1,4 @@
 source common.sh
 component=shipping
 
-maven
+func_maven
