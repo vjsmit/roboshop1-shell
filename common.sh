@@ -53,39 +53,39 @@ func_mongodb() {
 
 func_mysql() {
   echo -e "${color}Install mysql client${no_color}"
-  dnf install mysql -y    &>>${app_path}
+  dnf install mysql -y    &>>${log_file}
 
   echo -e "${color}Install mysql client${no_color}"
-  mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 </app/schema/${component}.sql   &>>${app_path}
+  mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 <${app_path}/schema/${component}.sql   &>>${log_file}
 }
 
 func_maven() {
   echo -e "${color}Install maven${no_color}"
-  dnf install maven -y    &>>${app_path}
+  dnf install maven -y    &>>${log_file}
 
   echo -e "${color}Add application User${no_color}"
-  useradd roboshop    &>>${app_path}
+  useradd roboshop    &>>${log_file}
 
   echo -e "${color}Setup an app directory${no_color}"
-  rm -rf /app   &>>${app_path}
-  mkdir /app    &>>${app_path}
+  rm -rf ${app_path}   &>>${log_file}
+  mkdir ${app_path}    &>>${log_file}
 
   echo -e "${color}Download the application code & unzip to created app directory${no_color}"
-  curl -L -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip   &>>${app_path}
-  cd /app
-  unzip /tmp/${component}.zip   &>>${app_path}
+  curl -L -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip   &>>${log_file}
+  cd ${app_path}
+  unzip /tmp/${component}.zip   &>>${log_file}
 
   echo -e "${color}Download the dependencies & build the application${no_color}"
-  mvn clean package   &>>${app_path}
-  mv target/${component}-1.0.jar ${component}.jar   &>>${app_path}
+  mvn clean package   &>>${log_file}
+  mv target/${component}-1.0.jar ${component}.jar   &>>${log_file}
 
   echo -e "${color}Setup SystemD ${component} Service${no_color}"
-  cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${app_path}
+  cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${log_file}
 
   func_mysql
 
   echo -e "${color}Start the service ${no_color}"
-  systemctl daemon-reload   &>>${app_path}
-  systemctl enable ${component}   &>>${app_path}
-  systemctl restart ${component}    &>>${app_path}
+  systemctl daemon-reload   &>>${log_file}
+  systemctl enable ${component}   &>>${log_file}
+  systemctl restart ${component}    &>>${log_file}
 }
