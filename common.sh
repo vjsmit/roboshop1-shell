@@ -50,3 +50,42 @@ func_mongodb() {
   echo -e "${color}Load schema${no_color}"
   mongo --host mongodb-dev.smitdevops.online <${app_path}/schema/${component}.js    &>>${log_file}
 }
+
+func_mysql() {
+  echo -e "${color}Install mysql client${no_color}"
+  dnf install mysql -y    &>>${app_path}
+
+  echo -e "${color}Install mysql client${no_color}"
+  mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 </app/schema/${component}.sql   &>>${app_path}
+}
+
+func_maven() {
+  echo -e "${color}Install maven${no_color}"
+  dnf install maven -y    &>>${app_path}
+
+  echo -e "${color}Add application User${no_color}"
+  useradd roboshop    &>>${app_path}
+
+  echo -e "${color}Setup an app directory${no_color}"
+  rm -rf /app   &>>${app_path}
+  mkdir /app    &>>${app_path}
+
+  echo -e "${color}Download the application code & unzip to created app directory${no_color}"
+  curl -L -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip   &>>${app_path}
+  cd /app
+  unzip /tmp/${component}.zip   &>>${app_path}
+
+  echo -e "${color}Download the dependencies & build the application${no_color}"
+  mvn clean package   &>>${app_path}
+  mv target/${component}-1.0.jar ${component}.jar   &>>${app_path}
+
+  echo -e "${color}Setup SystemD ${component} Service${no_color}"
+  cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${app_path}
+
+  func_mysql
+
+  echo -e "${color}Start the service ${no_color}"
+  systemctl daemon-reload   &>>${app_path}
+  systemctl enable ${component}   &>>${app_path}
+  systemctl restart ${component}    &>>${app_path}
+}
