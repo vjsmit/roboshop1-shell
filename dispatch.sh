@@ -1,4 +1,4 @@
 source common.sh
 component=dispatch
 
-func_goloang
+func_golang
