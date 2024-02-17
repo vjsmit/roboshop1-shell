@@ -65,7 +65,7 @@ func_mysql() {
   echo -e "${color}Install mysql client${no_color}"
   dnf install mysql -y    &>>${log_file}
 
-  echo -e "${color}Install mysql client${no_color}"
+  echo -e "${color}Load Schema${no_color}"
   mysql -h mysql-dev.smitdevops.online -uroot -pRoboShop@1 <${app_path}/schema/${component}.sql   &>>${log_file}
 }
 
