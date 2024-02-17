@@ -27,11 +27,13 @@ app_presetup() {
 func_systemd() {
   echo -e "${color}Setup SystemD ${component} Service${no_color}"
   cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${log_file}
+  echo $?
 
   echo -e "${color}Start ${component} service${no_color}"
   systemctl daemon-reload   &>>${log_file}
   systemctl enable ${component}    &>>${log_file}
   systemctl restart ${component}     &>>${log_file}
+  echo $?
 }
 
 
