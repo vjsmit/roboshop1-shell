@@ -4,7 +4,7 @@ log_file="/tmp/roboshop.log"
 app_path="/app"
 
 func_statcheck() {
-  if [ $? == 0 ]; then
+  if [ $1 == 0 ]; then
       echo -e "\e[32mSUCCESS\e[0m"
     else
       echo -e "\e[31mFAILURE\e[0m"
@@ -22,16 +22,16 @@ app_presetup() {
   echo -e "${color}Create App Dir${no_color}"
   rm -rf ${app_path}
   mkdir ${app_path}
-  func_statcheck
+  func_statcheck $?
 
   echo -e "${color}Downloading App Code${no_color}"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip    &>>${log_file}
-  func_statcheck
+  func_statcheck $?
 
   echo -e "${color}Unzip App Code${no_color}"
   cd ${app_path}
   unzip /tmp/${component}.zip    &>>${log_file}
-  func_statcheck
+  func_statcheck $?
 }
 
 func_systemd() {
@@ -43,7 +43,7 @@ func_systemd() {
   systemctl daemon-reload   &>>${log_file}
   systemctl enable ${component}    &>>${log_file}
   systemctl restart ${component}     &>>${log_file}
-  func_statcheck
+  func_statcheck $?
 }
 
 
@@ -103,13 +103,13 @@ func_maven() {
 python() {
   echo -e "${color}Install Python 3.6${no_color}"
   dnf install python36 gcc python3-devel -y   &>>${log_file}
-  func_statcheck
+  func_statcheck $?
 
   app_presetup
 
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
-  func_statcheck
+  func_statcheck $?
 
   func_systemd
 }
