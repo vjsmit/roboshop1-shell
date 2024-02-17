@@ -3,24 +3,42 @@ nocolor="\e[0m"
 log_file="/tmp/roboshop.log"
 app_path="/app"
 
+
+
 app_presetup() {
   echo -e "${color}Adding App user${no_color}"
   useradd roboshop    &>>${log_file}
-  echo $?
+  if [ $? == 0 ]; then
+      echo SUCCESS
+    else
+      echo FAILURE
+  fi
 
   echo -e "${color}Create App Dir${no_color}"
   rm -rf ${app_path}
   mkdir ${app_path}
-  echo $?
+  if [ $? == 0 ]; then
+      echo SUCCESS
+    else
+      echo FAILURE
+  fi
 
   echo -e "${color}Downloading App Code${no_color}"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip    &>>${log_file}
-  echo $?
+  if [ $? == 0 ]; then
+      echo SUCCESS
+    else
+      echo FAILURE
+  fi
 
   echo -e "${color}Unzip App Code${no_color}"
   cd ${app_path}
   unzip /tmp/${component}.zip    &>>${log_file}
-  echo $?
+  if [ $? == 0 ]; then
+      echo SUCCESS
+    else
+      echo FAILURE
+  fi
 
 }
 
@@ -102,7 +120,11 @@ python() {
 
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
-  echo $?
+  if [ $? == 0 ]; then
+      echo SUCCESS
+    else
+      echo FAILURE
+  fi
 
   func_systemd
 }
