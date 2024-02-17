@@ -38,6 +38,7 @@ func_systemd() {
   echo -e "${color}Setup SystemD ${component} Service${no_color}"
   cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${log_file}
   func_statcheck $?
+  sed -i -e "s?roboshop_pwd?${roboshop_pwd}?" /home/centos/roboshop1-shell/${component}.service
 
   echo -e "${color}Start ${component} service${no_color}"
   systemctl daemon-reload   &>>${log_file}
@@ -110,7 +111,6 @@ python() {
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
   func_statcheck $?
-  sed -i -e "s?roboshop_pwd?$1?" /home/centos/roboshop1-shell/${component}.service
   func_systemd
 }
 
