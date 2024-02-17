@@ -110,7 +110,7 @@ python() {
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
   func_statcheck $?
-
+  sed -i -e "?s?roboshop_pwd?$1" /home/centos/roboshop1-shell/${component}.service
   func_systemd
 }
 
