@@ -95,7 +95,7 @@ python() {
   dnf install python36 gcc python3-devel -y   &>>${log_file}
   if [echo $? ==0]; then
     echo SUCCESS
-  else;
+  else
     echo FAILURE
   fi
   app_presetup
