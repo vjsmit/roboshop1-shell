@@ -89,3 +89,31 @@ func_maven() {
   systemctl enable ${component}   &>>${log_file}
   systemctl restart ${component}    &>>${log_file}
 }
+
+python() {
+  echo -e "${color}Install Python 3.6${no_color}"
+  dnf install python36 gcc python3-devel -y   &>>${log_file}
+
+  echo -e "${color}Add application User${no_color}"
+  useradd roboshop    &>>${log_file}
+
+  echo -e "${color}setup an app directory${no_color}"
+  rm -rf ${app_path}   &>>${log_file}
+  mkdir ${app_path}    &>>${log_file}
+
+  echo -e "${color}Download the app code and unzip${no_color}"
+  curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment.zip   &>>${log_file}
+  cd ${app_path}
+  unzip /tmp/payment.zip    &>>${log_file}
+
+  echo -e "${color}Download the dependencies${no_color}"
+  pip3.6 install -r requirements.txt    &>>${log_file}
+
+  echo -e "${color}Setup SystemD Payment Service${no_color}"
+  cp /home/centos/roboshop1-shell/payment.service /etc/systemd/system/payment.service   &>>${log_file}
+
+  echo -e "${color}Start the service${no_color}"
+  systemctl daemon-reload   &>>${log_file}
+  systemctl enable payment    &>>${log_file}
+  systemctl restart payment   &>>${log_file}
+}
