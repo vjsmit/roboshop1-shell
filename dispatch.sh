@@ -1,27 +1,33 @@
-echo -e "\e[31m Install GoLang \e[0m"
-dnf install golang -y   &>>/tmp/roboshop.log
+source common.sh
+component=dispatch
 
-echo -e "\e[31m Add application User \e[0m"
-useradd roboshop    &>>/tmp/roboshop.log
+func_goloang
 
-echo -e "\e[31m Setup an app directory \e[0m"
-mkdir /app    &>>/tmp/roboshop.log
+echo -e "${color}Install GoLang${no_color}"
+dnf install golang -y   &>>${log_file}
 
-echo -e "\e[31m Download & extract the application code to created app directory \e[0m"
-curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch.zip   &>>/tmp/roboshop.log
-cd /app
-unzip /tmp/dispatch.zip   &>>/tmp/roboshop.log
+echo -e "${color}Add application User${no_color}"
+useradd roboshop    &>>${log_file}
 
-echo -e "\e[31m Download the dependencies \e[0m"
-go mod init dispatch    &>>/tmp/roboshop.log
-go get    &>>/tmp/roboshop.log
-go build    &>>/tmp/roboshop.log
+echo -e "${color}Setup an app directory${no_color}"
+rm -rf ${app_path
+mkdir ${app_path    &>>${log_file}
 
-echo -e "\e[31m Setup SystemD Payment Service \e[0m"
-cp /home/centos/roboshop1-shell/dispatch.service /etc/systemd/system/dispatch.service   &>>/tmp/roboshop.log
+echo -e "${color}Download & extract the application code to created app directory${no_color}"
+curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch.zip   &>>${log_file}
+cd ${app_path
+unzip /tmp/dispatch.zip   &>>${log_file}
 
-echo -e "\e[31m Load the service  \e[0m"
-systemctl daemon-reload   &>>/tmp/roboshop.log
-systemctl enable dispatch   &>>/tmp/roboshop.log
-systemctl restart dispatch    &>>/tmp/roboshop.log
+echo -e "${color}Download the dependencies${no_color}"
+go mod init dispatch    &>>${log_file}
+go get    &>>${log_file}
+go build    &>>${log_file}
+
+echo -e "${color}Setup SystemD Payment Service${no_color}"
+cp /home/centos/roboshop1-shell/dispatch.service /etc/systemd/system/dispatch.service   &>>${log_file}
+
+echo -e "${color}Load the service ${no_color}"
+systemctl daemon-reload   &>>${log_file}
+systemctl enable dispatch   &>>${log_file}
+systemctl restart dispatch    &>>${log_file}
 
