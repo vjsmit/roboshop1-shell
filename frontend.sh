@@ -1,20 +1,22 @@
-echo -e "\e[33m Installing Nginx \e[0m"
-dnf install nginx -y            &>>/tmp/roboshop.log
+source common.sh
 
-echo -e "\e[33m Removing default html content \e[0m"
-rm -rf /usr/share/nginx/html/*    &>>/tmp/roboshop.log
+echo -e "${color}Installing Nginx${no_color}"
+dnf install nginx -y            &>>${log_path}
 
-echo -e "\e[33m Download frontend content \e[0m"
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip   &>>/tmp/roboshop.log
+echo -e "${color}Removing default html content${no_color}"
+rm -rf /usr/share/nginx/html/*    &>>${log_path}
 
-echo -e "\e[33m Unzip frontend content \e[0m"
-cd /usr/share/nginx/html  &>>/tmp/roboshop.log
-unzip /tmp/frontend.zip   &>>/tmp/roboshop.log
+echo -e "${color}Download frontend content${no_color}"
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip   &>>${log_path}
 
-echo -e "\e[33m Copy reverse proxy config \e[0m"
-cp /home/centos/roboshop1-shell/frontend.conf /etc/nginx/default.d/roboshop.conf  &>>/tmp/roboshop.log
+echo -e "${color}Unzip frontend content${no_color}"
+cd /usr/share/nginx/html  &>>${log_path}
+unzip /tmp/frontend.zip   &>>${log_path}
+
+echo -e "${color}Copy reverse proxy config${no_color}"
+cp /home/centos/roboshop1-shell/frontend.conf /etc/nginx/default.d/roboshop.conf  &>>${log_path}
 
 
-echo -e "\e[33m Enable and restart nginx server \e[0m"
-systemctl enable nginx      &>>/tmp/roboshop.log
-systemctl restart nginx     &>>/tmp/roboshop.log
+echo -e "${color}Enable and restart nginx server${no_color}"
+systemctl enable nginx      &>>${log_path}
+systemctl restart nginx     &>>${log_path}
