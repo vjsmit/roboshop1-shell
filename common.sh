@@ -6,17 +6,21 @@ app_path="/app"
 app_presetup() {
   echo -e "${color}Adding App user${no_color}"
   useradd roboshop    &>>${log_file}
+  echo $?
 
   echo -e "${color}Create App Dir${no_color}"
   rm -rf ${app_path}
   mkdir ${app_path}
+  echo $?
 
   echo -e "${color}Downloading App Code${no_color}"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip    &>>${log_file}
+  echo $?
 
   echo -e "${color}Unzip App Code${no_color}"
   cd ${app_path}
   unzip /tmp/${component}.zip    &>>${log_file}
+  echo $?
 
 }
 
@@ -87,11 +91,13 @@ func_maven() {
 python() {
   echo -e "${color}Install Python 3.6${no_color}"
   dnf install python36 gcc python3-devel -y   &>>${log_file}
+  echo $?
 
   app_presetup
 
   echo -e "${color}Download the dependencies${no_color}"
   pip3.6 install -r requirements.txt    &>>${log_file}
+  echo $?
 
   func_systemd
 }
