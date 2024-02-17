@@ -38,7 +38,7 @@ func_systemd() {
   echo -e "${color}Setup SystemD ${component} Service${no_color}"
   cp /home/centos/roboshop1-shell/${component}.service /etc/systemd/system/${component}.service   &>>${log_file}
   func_statcheck $?
-  sed -i -e "s?roboshop_pwd?${roboshop_pwd}?" /home/centos/roboshop1-shell/${component}.service
+  sed -i -e "s?roboshop_pwd?${roboshop_pwd}?" /etc/systemd/system/${component}.service    &>>${log_file}
 
   echo -e "${color}Start ${component} service${no_color}"
   systemctl daemon-reload   &>>${log_file}
