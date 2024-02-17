@@ -93,7 +93,7 @@ func_maven() {
 python() {
   echo -e "${color}Install Python 3.6${no_color}"
   dnf install python36 gcc python3-devel -y   &>>${log_file}
-  if [$? == 0]; then
+  if [ $? == 0 ]; then
     echo SUCCESS
   else
     echo FAILURE
