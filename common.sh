@@ -13,7 +13,10 @@ func_statcheck() {
 
 app_presetup() {
   echo -e "${color}Adding App user${no_color}"
-  useradd roboshop    &>>${log_file}
+  id roboshop   &>>${log_file}
+  if [ $? -ne 0 ]; then
+    useradd roboshop    &>>${log_file}
+  fi
   func_statcheck
 
   echo -e "${color}Create App Dir${no_color}"
