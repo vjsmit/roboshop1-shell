@@ -3,7 +3,7 @@ nocolor="\e[0m"
 log_file="/tmp/roboshop.log"
 app_path="/app"
 
-nodejs(){
+func_nodejs(){
   echo -e "${color}Disabling Default nodejs${no_color}"
   dnf module disable nodejs -y    &>>${log_file}
 
