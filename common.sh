@@ -17,7 +17,7 @@ app_presetup() {
   if [ $? -ne 0 ]; then
     useradd roboshop    &>>${log_file}
   fi
-  func_statcheck
+  func_statcheck $?
 
   echo -e "${color}Create App Dir${no_color}"
   rm -rf ${app_path}
